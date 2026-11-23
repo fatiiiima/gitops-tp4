@@ -20,8 +20,8 @@ spec:
       annotations:
         summary: "Application {{ $labels.name }} OutOfSync depuis plus de 2 min"
     - alert: PodImagePullBackOff
-      expr: kube_pod_container_status_waiting_reason{reason=~"ImagePullBackOff|ErrImagePull|CrashLoopBackOff"} == 1
+      expr: sum by (namespace, pod) (kube_pod_container_status_waiting_reason{reason=~"ImagePullBackOff|ErrImagePull|CrashLoopBackOff"}) > 0
       for: 1m
       labels: {severity: critical}
       annotations:
-        summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} bloqué : {{ $labels.reason }}"
+        summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} bloqué (ErrImagePull / ImagePullBackOff / CrashLoopBackOff)"
