@@ -8,4 +8,4 @@ images:
   newTag: 6.5.0
 replicas:
 - name: podinfo
-  count: 2
+  count: 4
